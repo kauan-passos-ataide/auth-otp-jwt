@@ -1,20 +1,17 @@
-import { MailtrapClient } from "mailtrap"
+import 'dotenv/config';
+import { MailtrapClient } from 'mailtrap';
 
 export const sendEmail = async (to: string, subject: string, body: string) => {
-    const mailtrap = new MailtrapClient({
+    const client = new MailtrapClient({
         token: process.env.MAILTRAP_TOKEN as string,
-        testInboxId: 3514665
+        testInboxId: 97878789, // colocar id da inbox
+        accountId: 978798797 // colocar id da conta
     });
-    try {
-        await mailtrap.send({
-            from: { name: 'Sistema', email: 'sistema@gmail.com' },
-            to: [{ email: to}],
-            subject,
-            html: body,
-            text: body
-        });
-        return true;
-    } catch (err) {
-        return false;
-    }
+
+    await client.testing.send({
+        from: { name: 'Sistema', email: 'sistema@gmail.com' },
+        to: [{ email: to}],
+        subject,
+        text: body,
+    });
 }

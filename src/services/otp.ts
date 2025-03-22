@@ -11,6 +11,20 @@ export const generateOTP = async (userId: number) => {
     let expiresAt = new Date();
     expiresAt.setMinutes(expiresAt.getMinutes() + 15);
 
+    const findUserOtp = await prisma.otp.findMany({
+        where: {
+            userId
+        }
+    })
+    
+    if (findUserOtp.length > 0) {
+        await prisma.otp.deleteMany({
+            where: {
+                userId
+            }
+        })
+    }
+
     const otp = await prisma.otp.create({
         data: {
             id: uuid(),
@@ -48,9 +62,9 @@ export const validateOTP = async (id: string, code: string) => {
         return false;
     }
     
-    await prisma.otp.delete({
+    await prisma.otp.deleteMany({
         where: {
-            id: otpRecord.id
+            userId: otpRecord.userId,
         }
     });
 

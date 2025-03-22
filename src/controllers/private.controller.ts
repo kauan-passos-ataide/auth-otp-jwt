@@ -1,18 +1,17 @@
-import { Response } from "express";
-import { ExtendedRequest } from "../types/extended-request";
+import { RequestHandler } from "express";
 import { getUserByEmail } from "../services/user";
 
-export const test = async (req: ExtendedRequest, res: Response) => {
+export const test: RequestHandler = async (req, res) => {
     const { email } = req.body;
     if (!email) {
-        res.status(400).json({ error: 'Email não fornecido' });
+        res.status(400).json({ error: 'Email is required' });
         return;
     }
 
     const user = await getUserByEmail(email);
 
     if (!user) {
-        res.status(404).json({ error: 'Acesso negado' });
+        res.status(404).json({ error: 'Unauthorized access' });
         return;
     }
 

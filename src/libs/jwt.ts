@@ -4,7 +4,7 @@ import { RequestHandler } from 'express';
 
 export const createJWT = (id: number) => {
     const payload = { id };
-    return jwt.sign(payload, process.env.JWT_TOKEN as string, { expiresIn: '15 days' });
+    return jwt.sign(payload, process.env.JWT_TOKEN as string, { expiresIn: '2 minutes' });
 }
 
 export const verifyJWT: RequestHandler = async (req, res, next) => {

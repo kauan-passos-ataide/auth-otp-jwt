@@ -35,14 +35,14 @@ export const signup: RequestHandler = async (req, res) => {
     const data = authSignUpSchema.safeParse(req.body);
 
     if (!data.success) {
-        res.status(400).json({ error: 'Dados inválidos' });
+        res.status(400).json({ error: 'Invalid data' });
         return;
     }
 
     const user = await getUserByEmail(data.data.email);
 
     if (user) {
-        res.status(409).json({ error: 'Já existe um usuário com esse e-mail' });
+        res.status(409).json({ error: 'User already registered' });
         return;
     }
 
@@ -54,12 +54,12 @@ export const signup: RequestHandler = async (req, res) => {
 export const verifyOTP: RequestHandler = async (req, res) => {
     const data = authVerifyOtpSchema.safeParse(req.body);
     if (!data.success) {
-        res.status(400).json({ error: 'Código inválido' });
+        res.status(400).json({ error: 'Code invalid' });
         return;
     }
     const user = await validateOTP(data.data.id, data.data.otp);
     if (!user) {
-        res.status(401).json({ error: 'Código inválido' });
+        res.status(401).json({ error: 'Code invalid' });
         return;
     }
 
